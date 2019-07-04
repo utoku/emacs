@@ -118,10 +118,12 @@ vi style of % jumping to matching brace."
 (load "package")
 (package-initialize)
 ;;melpa stable repository
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packagackes/") t)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packagackes/") t)
 
 ;;spanking new repository
-;; (add-to-list 'package-archives '("melpa-new" . "https://melpa.org/packages/") t)
+;; (add-to-list 'package-archives
+;;              '("melpa-new" . "https://melpa.org/packages/") t)
 
 ;;;;; list of my packages -----------------------------------------------------
 (defvar usomer/packages '(
