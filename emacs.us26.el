@@ -130,16 +130,25 @@ vi style of % jumping to matching brace."
 			  js2-mode
 			  leuven-theme
 			  magit
-              yaml-mode)
+                          projectile
+                          yaml-mode)
   "Default packages")
-;;other web-mode, python-mode, html-helper.mode
+;;others: web-mode, python-mode, html-helper.mode, projectile.
+
+
+;; --------------------------------------------------------
+;; Current packages installed via debian:
+;;
+;; magit, projectile
+;; ---------------------------------------------------------
+
 
 (defun usomer/packages-installed-p ()
   (loop for pkg in usomer/packages
         when (not (package-installed-p pkg)) do (return nil)
         finally (return t)))
 
-;;TODO function to install my packages
+;;TODO function to check and install my packages
 
 ;;;;; themes ==================================================================
 
@@ -156,18 +165,23 @@ vi style of % jumping to matching brace."
 
 ;;;;; ido ---------------------------------------------------------------------
 
-;;FIXME: something is breaking this ido mode
-;;(ido-mode t)
-;; (setq ido-enable-flex-matching t
-;;       ido-use-virtual-buffers t)
+;;ido mode
+(ido-mode t)
+(setq ido-enable-flex-matching t
+      ido-use-virtual-buffers t)
 
 ;;;;; powerline ---------------------------------------------------------------
 
 ;; currently testing, gives a bit of theming to the powerline
-
 (require 'powerline)
 (powerline-default-theme)
 
+;;;;; projectile --------------------------------------------------------------
+(require 'projectile)
+;;(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "M-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(projectile-mode +1)
 
 ;;;;; smex --------------------------------------------------------------------
 ;;requires some debugging
@@ -473,9 +487,14 @@ vi style of % jumping to matching brace."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
+ '(custom-enabled-themes (quote (leuven)))
  '(custom-safe-themes
    (quote
-    ("9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default)))
+    ("628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default)))
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
