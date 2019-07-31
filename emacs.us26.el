@@ -134,12 +134,14 @@ vi style of % jumping to matching brace."
                           yaml-mode)
   "Default packages")
 ;;others: web-mode, python-mode, html-helper.mode, projectile.
-
+;; ivy, swiper(ivy), counsel(ivy) 
 
 ;; --------------------------------------------------------
 ;; Current packages installed via debian:
+;; (They get elpa-* names in front of them.)
 ;;
-;; magit, projectile
+;; magit, projectile, counsel ( gets counsel+swiper+ivy trio )
+;; use-package
 ;; ---------------------------------------------------------
 
 
@@ -169,6 +171,31 @@ vi style of % jumping to matching brace."
 (ido-mode t)
 (setq ido-enable-flex-matching t
       ido-use-virtual-buffers t)
+
+;;;;; ivy configuration--------------------------------------------------------
+
+;ivy-mode 1)
+(use-package ivy
+  :ensure t
+  :commands (ivy-mode)
+  :config
+  (require 'ivy)
+  (ivy-mode t)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  (setq ivy-wrap t)
+  ;;global-set-key (kbd "C-c C-r") 'ivy-resume)
+  ;; Show #/total when scrolling buffers
+  (setq ivy-count-format "%d/%d ")
+  )
+
+(use-package swiper
+  :ensure t
+  :bind (("C-s" . swiper)
+         ("C-r" . swiper))
+  )
+
+;;TODO also add counsel settings
 
 ;;;;; powerline ---------------------------------------------------------------
 
@@ -494,7 +521,7 @@ vi style of % jumping to matching brace."
  '(custom-enabled-themes (quote (leuven)))
  '(custom-safe-themes
    (quote
-    ("628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default)))
+    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default)))
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
