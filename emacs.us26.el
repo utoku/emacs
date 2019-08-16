@@ -57,7 +57,6 @@
 ;some buffer key bindings
 (global-set-key [f5] 'kill-this-buffer)
 (global-set-key [f6] 'buffer-menu)
-(global-set-key (kbd "C-x g") 'magit-status)
 
 (defun goto-match-paren (arg)
   "Go to the matching parenthesis if on parenthesis, otherwise insert %.
@@ -90,14 +89,6 @@ vi style of % jumping to matching brace."
 (add-to-list 'load-path "~/emacs")
 (setq my-load-path "~/emacs/")
 
-;; ;;file finder
-;; ;;searches load-path for the file, and returns true or nil
-;; (defun file-exists-in-load-path-p (filename path)
-;;   (if path 
-;; 	  (let (currentpath (car path))
-;; 		(if (file-exists-p (concat currentpath "/" filename))
-;; 			t
-;; 		  (file-exists-in-load-path-p filename (cdr path))))))
 
 ;;another loader
 (defun check-and-load (lispfile)
@@ -119,7 +110,8 @@ vi style of % jumping to matching brace."
 (package-initialize)
 ;;melpa stable repository
 (add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packagackes/") t)
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
 
 ;;spanking new repository
 ;; (add-to-list 'package-archives
@@ -127,12 +119,19 @@ vi style of % jumping to matching brace."
 
 ;;;;; list of my packages -----------------------------------------------------
 (defvar usomer/packages '(
+                          ivy
+                          swiper
+                          counsel
+                          counsel-etags
+                          ycmd
+                          flycheck-ycmd
+                          company-ycmd
 			  js2-mode
 			  leuven-theme
 			  magit
                           projectile
                           yaml-mode)
-  "Default packages")
+  "Utku Somer's Default Packages")
 ;;others: web-mode, python-mode, html-helper.mode, projectile.
 ;; ivy, swiper(ivy), counsel(ivy) 
 
@@ -140,8 +139,9 @@ vi style of % jumping to matching brace."
 ;; Current packages installed via debian:
 ;; (They get elpa-* names in front of them.)
 ;;
-;; magit, projectile, counsel ( gets counsel+swiper+ivy trio )
+;; magit, projectile
 ;; use-package
+;; yaml-mode
 ;; ---------------------------------------------------------
 
 
@@ -150,20 +150,27 @@ vi style of % jumping to matching brace."
         when (not (package-installed-p pkg)) do (return nil)
         finally (return t)))
 
-;;TODO function to check and install my packages
+;;TODO function to check and install and/or UPDATE my packages
 
 ;;;;; themes ==================================================================
 
-;; TODO: adding time support for dark themes at night.
 ;; leuven is a nice light theme.
-(if window-system
-    (load-theme 'leuven t)
-  (load-theme 'wombat t))
+;; (if window-system
+;;     (load-theme 'leuven t)
+;;   (load-theme 'wombat t))
 
-;;;;; emacs goodies ===========================================================
+
+
+;;;;; emacs packages and goodies ==============================================
+;; some of these calls use the use-package macro. make sure that is
+;; loaded first.
 
 ;;magit is a nice git interface
-(require 'magit)
+;(require 'magit)
+;(global-set-key (kbd "C-x g") 'magit-status)
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status)))
 
 ;;;;; ido ---------------------------------------------------------------------
 
@@ -173,8 +180,8 @@ vi style of % jumping to matching brace."
       ido-use-virtual-buffers t)
 
 ;;;;; ivy configuration--------------------------------------------------------
+;;ivy, swiper and counsel settings are together here.
 
-;ivy-mode 1)
 (use-package ivy
   :ensure t
   :commands (ivy-mode)
@@ -195,7 +202,44 @@ vi style of % jumping to matching brace."
          ("C-r" . swiper))
   )
 
-;;TODO also add counsel settings
+(use-package counsel
+  :ensure t
+  :bind (("M-x" . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         ("<f1> f" . counsel-describe-function)
+         ("<f1> v" . counsel-describe-variable)
+         ("<f1> l" . counsel-find-library)
+         ("<f2> i" . counsel-info-lookup-symbol)
+         ("<f2> u" . counsel-unicode-char)
+         ("C-c g" . counsel-git-grep)
+         ("C-c j" . counsel-git)
+         ("C-c k" . counsel-ag)
+         ("C-c r" . counsel-rg)
+         ("C-x l" . counsel-locate)
+         :map minibuffer-local-map
+         ("C-r" . counsel-minibuffer-add)
+         )
+  :config
+  (if (executable-find "rg")
+      ;; use ripgrep instead of grep because it's way faster
+      (setq counsel-grep-base-command
+            "rg -i -M 120 --no-heading --line-number --color never '%s' %s"
+            counsel-rg-base-command
+            "rg -i -M 120 --no-heading --line-number --color never %s ."
+            )
+    (warn "\nWARNING: Could not find the ripgrep executable. It "
+          "is recommended you install ripgrep.")
+    )
+  )
+
+(use-package counsel-etags
+  :ensure t
+  :bind (
+         ("M-." . counsel-etags-find-tag-at-point)
+         ("M-t" . counsel-etags-grep-symbol-at-point)
+         ("M-s" . counsel-etags-find-tag))
+  )
+
 
 ;;;;; powerline ---------------------------------------------------------------
 
@@ -217,6 +261,50 @@ vi style of % jumping to matching brace."
 ;;(smex-initialize)
 ;;(global-set-key (kbd "M-x") 'smex)
 ;;(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+
+
+;;;;; ycmd --------------------------------------------------------------------
+;;;; you complete me daemon integration.
+;;; This requires that you have ymcd [debian package] installed, and
+;;; have a working ycm_conf.py
+
+;; (require 'ycmd)
+;; (add-hook 'c++-mode-hook 'ycmd-mode)
+;; (set-variable 'ycmd-server-command '("python3" "/usr/lib/ycmd/ycmd/"))
+
+(use-package ycmd
+  :ensure t
+  :init (add-hook 'c++-mode-hook #'ycmd-mode)
+  :config
+  (set-variable 'ycmd-server-command '("python3" "/usr/lib/ycmd/ycmd/"))
+  ;(set-variable 'ycmd-global-config (expand-file-name "~/path/to/ycmd/ycm_conf.py"))
+  ;(set-variable 'ycmd-extra-conf-whitelist '("~/Repos/*"))
+
+  (use-package company-ycmd
+    :ensure t
+    :init (company-ycmd-setup)
+    ;:config (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd))
+    ))
+
+;;company mode enables the completion UI
+(use-package company
+  :ensure t
+  :config
+  ;; Zero delay when pressing tab
+  (setq company-idle-delay 0)
+  (add-hook 'after-init-hook 'global-company-mode)
+  ;; remove unused backends
+  (setq company-backends (delete 'company-semantic company-backends))
+  (setq company-backends (delete 'company-eclim company-backends))
+  (setq company-backends (delete 'company-xcode company-backends))
+  (setq company-backends (delete 'company-clang company-backends))
+  (setq company-backends (delete 'company-bbdb company-backends))
+  (setq company-backends (delete 'company-oddmuse company-backends))
+  )
+
+
+;;;;; packages being tested are here for now ----------------------------------
+(check-and-load "testing.el")
 
 ;;;;; styles and indentation ==================================================
 
@@ -282,6 +370,7 @@ vi style of % jumping to matching brace."
 
 ;; guess-style ----------------------------------------------------------------
 
+;;FIXME: guess-style is using some old functions, needs update,
 ;(add-to-path 'load-path "/path/to/guess-style")
 (check-and-load "guess-style.el") 
 (autoload 'guess-style-set-variable "guess-style" nil t)
@@ -364,7 +453,8 @@ vi style of % jumping to matching brace."
 (add-hook 'js2-mode-hook 'noapi-indentation)
 ;; ----------------------------------------------------------------------------
 
-;; python 
+;; python
+;;FIXME: still using the old python mode from my ~/emacs/
 ;(setq load-path `("~/emacs" . ,load-path))
 (load-library "python-mode")
 (setq auto-mode-alist
@@ -423,7 +513,10 @@ vi style of % jumping to matching brace."
 
 ;;;;; project control and git ==================================================
 
-;; load my project directory control code.
+
+
+;; load my project directory control code.  (looks like this might get
+;; replaced with projectile, as it kind of does the same thing.)
 (check-and-load "uprojects.el")
 
 (global-set-key (kbd "<f9>") 'project-select)
@@ -518,14 +611,43 @@ vi style of % jumping to matching brace."
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
- '(custom-enabled-themes (quote (leuven)))
  '(custom-safe-themes
    (quote
     ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default)))
+ '(fci-rule-color "#515151")
+ '(hl-paren-background-colors (quote ("#2492db" "#95a5a6" nil)))
+ '(hl-paren-colors (quote ("#ecf0f1" "#ecf0f1" "#c0392b")))
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (magit js2-refactor js2-mode powerline white-sand-theme spacemacs-theme rainbow-delimiters material-theme leuven-theme julia-mode intellij-theme flatui-theme company-irony-c-headers color-theme-solarized color-theme-sanityinc-tomorrow))))
+    (dashboard company-ycmd flycheck-ycmd counsel counsel-etags magit js2-refactor js2-mode powerline rainbow-delimiters material-theme leuven-theme julia-mode company-irony-c-headers color-theme-sanityinc-tomorrow)))
+ '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
+ '(sml/active-background-color "#34495e")
+ '(sml/active-foreground-color "#ecf0f1")
+ '(sml/inactive-background-color "#dfe4ea")
+ '(sml/inactive-foreground-color "#34495e")
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#f2777a")
+     (40 . "#f99157")
+     (60 . "#ffcc66")
+     (80 . "#99cc99")
+     (100 . "#66cccc")
+     (120 . "#6699cc")
+     (140 . "#cc99cc")
+     (160 . "#f2777a")
+     (180 . "#f99157")
+     (200 . "#ffcc66")
+     (220 . "#99cc99")
+     (240 . "#66cccc")
+     (260 . "#6699cc")
+     (280 . "#cc99cc")
+     (300 . "#f2777a")
+     (320 . "#f99157")
+     (340 . "#ffcc66")
+     (360 . "#99cc99"))))
+ '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

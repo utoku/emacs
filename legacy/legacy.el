@@ -14,6 +14,24 @@
 ;;(global-set-key "\C-c\C-u" 'uncomment-region) ;;FIXME
 
 ;;;-----------------------------------------------------------------------------
+
+;;;;; loading files ============================================================
+
+;; ;;file finder
+;; ;;searches load-path for the file, and returns true or nil
+;; (defun file-exists-in-load-path-p (filename path)
+;;   (if path 
+;; 	  (let (currentpath (car path))
+;; 		(if (file-exists-p (concat currentpath "/" filename))
+;; 			t
+;; 		  (file-exists-in-load-path-p filename (cdr path))))))
+
+
+
+;;;;; packages ================================================================
+
+
+
 ;;; colorthemes
 ;;; FIXME: currently loading them with the leod function. 
 ;; (require 'color-theme "color-theme" t)
