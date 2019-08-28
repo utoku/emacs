@@ -286,7 +286,8 @@ vi style of % jumping to matching brace."
     ;:config (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd))
     ))
 
-;;company mode enables the completion UI
+;;company mode enables the completion UI. It is a modular in-buffer
+;;completion framework for Emacs.
 (use-package company
   :ensure t
   :config
@@ -620,7 +621,7 @@ vi style of % jumping to matching brace."
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (dashboard company-ycmd flycheck-ycmd counsel counsel-etags magit js2-refactor js2-mode powerline rainbow-delimiters material-theme leuven-theme julia-mode company-irony-c-headers color-theme-sanityinc-tomorrow)))
+    (circadian dashboard company-ycmd flycheck-ycmd counsel counsel-etags magit js2-refactor js2-mode powerline rainbow-delimiters material-theme leuven-theme julia-mode company-irony-c-headers color-theme-sanityinc-tomorrow)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
  '(sml/active-background-color "#34495e")
  '(sml/active-foreground-color "#ecf0f1")
