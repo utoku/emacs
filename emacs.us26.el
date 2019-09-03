@@ -57,6 +57,7 @@
 ;some buffer key bindings
 (global-set-key [f5] 'kill-this-buffer)
 (global-set-key [f6] 'buffer-menu)
+(global-set-key [f7] 'whitespace-mode)
 
 (defun goto-match-paren (arg)
   "Go to the matching parenthesis if on parenthesis, otherwise insert %.
@@ -126,9 +127,9 @@ vi style of % jumping to matching brace."
                           ycmd
                           flycheck-ycmd
                           company-ycmd
-			  js2-mode
-			  leuven-theme
-			  magit
+                          js2-mode
+                          leuven-theme
+                          magit
                           projectile
                           yaml-mode)
   "Utku Somer's Default Packages")
@@ -328,7 +329,8 @@ vi style of % jumping to matching brace."
   (setq-default tab-width 4) 
   (setq-default c-basic-indent 4)  
   (setq-default c-basic-offset 4)
-  (setq-default indent-tabs-mode t))
+  (setq-default indent-tabs-mode t)
+  (c-set-style "k&r"))
 
 ;; another indentation
 (defun four-space-indentation ()
@@ -414,6 +416,8 @@ vi style of % jumping to matching brace."
            ))
         ) t)
 
+;;;; Note that I also use ycmd package (above) with c++ mode.
+
 ;; ----------------------------------------------------------------------------
 
 
@@ -441,17 +445,49 @@ vi style of % jumping to matching brace."
 
 ;; ----------------------------------------------------------------------------
 
-;; js2-mode
+;; js2-mode for javascript
 
-(require 'js2-mode)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+;;(require 'js2-mode)
+;;(setq auto-mode-alist (rassq-delete-all 'js-mode auto-mode-alist))
+;;(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
-;; Better imenu
-(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+;;(add-to-list 'interpreter-mode-alist '("nodejs" . js2-mode))
+;;(add-to-list 'auto-mode-alist `(,(rx ".js" string-end) . js2-mode))
+;;(add-to-list 'auto-mode-alist (cons (rx ".js" eos) 'js2-mode))
 
-;;noapi tabs indentation for now
-;(add-hook 'javascript-mode-hook 'two-space-indentation)
-(add-hook 'js2-mode-hook 'noapi-indentation)
+(use-package js2-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  ;; CAUTION: interpreter-mode-alist overrides auto-mode-alist. I
+  ;; learned this the hard way so this comment stays.
+  (add-to-list 'interpreter-mode-alist '("nodejs" . js2-mode))
+  ;; Better imenu
+  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+  ;;noapi tabs indentation for now
+  (add-hook 'js2-mode-hook 'noapi-indentation)
+  )
+  
+
+;;;; This adds js2-mode as minor to the regular js-mode:
+;;(add-hook 'js-mode-hook 'js2-minor-mode)
+
+(add-hook 'js-mode-hook 'noapi-indentation)
+
+
+;;;; xref-js2 provides an ag based search instead of ctags in js2-mode
+(require 'xref-js2)
+
+;;;; js-mode (which js2 is based on) binds "M-." which conflicts with
+;;;; xref, so we unbind it.
+(define-key js-mode-map (kbd "M-.") nil)
+
+(add-hook 'js2-mode-hook (lambda ()
+  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+
+
+;;;;TODO test js2-refactor, tern, indium
+
+
 ;; ----------------------------------------------------------------------------
 
 ;; python
@@ -614,14 +650,14 @@ vi style of % jumping to matching brace."
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
  '(custom-safe-themes
    (quote
-    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default)))
+	("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default)))
  '(fci-rule-color "#515151")
  '(hl-paren-background-colors (quote ("#2492db" "#95a5a6" nil)))
  '(hl-paren-colors (quote ("#ecf0f1" "#ecf0f1" "#c0392b")))
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (circadian dashboard company-ycmd flycheck-ycmd counsel counsel-etags magit js2-refactor js2-mode powerline rainbow-delimiters material-theme leuven-theme julia-mode company-irony-c-headers color-theme-sanityinc-tomorrow)))
+	(xref-js2 circadian dashboard company-ycmd flycheck-ycmd counsel counsel-etags magit js2-refactor js2-mode powerline rainbow-delimiters material-theme leuven-theme julia-mode company-irony-c-headers color-theme-sanityinc-tomorrow)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
  '(sml/active-background-color "#34495e")
  '(sml/active-foreground-color "#ecf0f1")
@@ -630,24 +666,24 @@ vi style of % jumping to matching brace."
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
-    ((20 . "#f2777a")
-     (40 . "#f99157")
-     (60 . "#ffcc66")
-     (80 . "#99cc99")
-     (100 . "#66cccc")
-     (120 . "#6699cc")
-     (140 . "#cc99cc")
-     (160 . "#f2777a")
-     (180 . "#f99157")
-     (200 . "#ffcc66")
-     (220 . "#99cc99")
-     (240 . "#66cccc")
-     (260 . "#6699cc")
-     (280 . "#cc99cc")
-     (300 . "#f2777a")
-     (320 . "#f99157")
-     (340 . "#ffcc66")
-     (360 . "#99cc99"))))
+	((20 . "#f2777a")
+	 (40 . "#f99157")
+	 (60 . "#ffcc66")
+	 (80 . "#99cc99")
+	 (100 . "#66cccc")
+	 (120 . "#6699cc")
+	 (140 . "#cc99cc")
+	 (160 . "#f2777a")
+	 (180 . "#f99157")
+	 (200 . "#ffcc66")
+	 (220 . "#99cc99")
+	 (240 . "#66cccc")
+	 (260 . "#6699cc")
+	 (280 . "#cc99cc")
+	 (300 . "#f2777a")
+	 (320 . "#f99157")
+	 (340 . "#ffcc66")
+	 (360 . "#99cc99"))))
  '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
