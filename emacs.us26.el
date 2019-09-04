@@ -1,5 +1,5 @@
-;;;;; utku's .emacs, jules, debian buster, emacs 26
-;;;;; last modified: 201907
+;;;;; utku's .emacs, debian buster, emacs 26
+;;;;; last modified: 201909
 
 ;;User Information
 (setq user-full-name "Utku Somer")
@@ -306,6 +306,7 @@ vi style of % jumping to matching brace."
 
 
 ;;;;; packages being tested are here for now ----------------------------------
+;; load the packages being tested
 (check-and-load "testing.el")
 
 ;;;;; styles and indentation ==================================================
@@ -638,6 +639,10 @@ vi style of % jumping to matching brace."
 
 
 
+;;;;; load any other special stuff for this host if it exists =================
+(check-and-load (concat "special." system-name ".el"))
+
+;;;;; custom overwritten stuff=================================================
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
