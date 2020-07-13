@@ -200,7 +200,8 @@ vi style of % jumping to matching brace."
 (use-package swiper
   :ensure t
   :bind (("C-s" . swiper)
-         ("C-r" . swiper))
+         ;;("C-r" . swiper)
+         )
   )
 
 (use-package counsel
@@ -215,7 +216,8 @@ vi style of % jumping to matching brace."
          ("C-c g" . counsel-git-grep)
          ("C-c j" . counsel-git)
          ("C-c k" . counsel-ag)
-         ("C-c r" . counsel-rg)
+         ;;("C-c r" . counsel-rg)
+         ("C-r" . counsel-rg)
          ("C-x l" . counsel-locate)
          :map minibuffer-local-map
          ("C-r" . counsel-minibuffer-add)
@@ -277,6 +279,7 @@ vi style of % jumping to matching brace."
   :ensure t
   :init (add-hook 'c++-mode-hook #'ycmd-mode)
   :config
+  ;(set-variable 'ycmd-startup-timeout 8)
   (set-variable 'ycmd-server-command '("python3" "/usr/lib/ycmd/ycmd/"))
   ;(set-variable 'ycmd-global-config (expand-file-name "~/path/to/ycmd/ycm_conf.py"))
   ;(set-variable 'ycmd-extra-conf-whitelist '("~/Repos/*"))
@@ -340,7 +343,9 @@ vi style of % jumping to matching brace."
 
 (defun two-space-indentation ()
   (interactive)
-  (setq python-indent 2)) 
+  (setq c-basic-offset 2)
+  (setq python-indent 2)
+  (setq js-indent-level 2)) 
 
 ;; FIXME
 (defun n-space-indentation (number)
@@ -363,6 +368,10 @@ vi style of % jumping to matching brace."
 ;indentation hooks, this stuff might go into programming modes as well
 (add-hook 'c-mode-common-hook '4lands-indentation)
 ;(setq js-indent-level 2)
+(add-hook 'python-mode-hook 'python-indentation)
+(add-hook 'js-mode-hook 'two-space-indentation)
+;;js2-mode adds at package definition.
+
 
 ;;current default indentation
 (default-indentation)
@@ -465,14 +474,13 @@ vi style of % jumping to matching brace."
   ;; Better imenu
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
   ;;noapi tabs indentation for now
-  (add-hook 'js2-mode-hook 'noapi-indentation)
-  )
+  (add-hook 'js2-mode-hook 'two-space-indentation))
   
 
 ;;;; This adds js2-mode as minor to the regular js-mode:
 ;;(add-hook 'js-mode-hook 'js2-minor-mode)
 
-(add-hook 'js-mode-hook 'noapi-indentation)
+(add-hook 'js-mode-hook 'two-space-indentation)
 
 
 ;;;; xref-js2 provides an ag based search instead of ctags in js2-mode
@@ -655,14 +663,14 @@ vi style of % jumping to matching brace."
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
  '(custom-safe-themes
    (quote
-	("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default)))
+    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default)))
  '(fci-rule-color "#515151")
  '(hl-paren-background-colors (quote ("#2492db" "#95a5a6" nil)))
  '(hl-paren-colors (quote ("#ecf0f1" "#ecf0f1" "#c0392b")))
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (xref-js2 circadian dashboard company-ycmd flycheck-ycmd counsel counsel-etags magit js2-refactor js2-mode powerline rainbow-delimiters material-theme leuven-theme julia-mode company-irony-c-headers color-theme-sanityinc-tomorrow)))
+    (hydandata-light-theme xref-js2 circadian dashboard company-ycmd flycheck-ycmd counsel counsel-etags magit js2-refactor js2-mode powerline rainbow-delimiters material-theme leuven-theme julia-mode company-irony-c-headers color-theme-sanityinc-tomorrow)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
  '(sml/active-background-color "#34495e")
  '(sml/active-foreground-color "#ecf0f1")
@@ -671,24 +679,24 @@ vi style of % jumping to matching brace."
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
-	((20 . "#f2777a")
-	 (40 . "#f99157")
-	 (60 . "#ffcc66")
-	 (80 . "#99cc99")
-	 (100 . "#66cccc")
-	 (120 . "#6699cc")
-	 (140 . "#cc99cc")
-	 (160 . "#f2777a")
-	 (180 . "#f99157")
-	 (200 . "#ffcc66")
-	 (220 . "#99cc99")
-	 (240 . "#66cccc")
-	 (260 . "#6699cc")
-	 (280 . "#cc99cc")
-	 (300 . "#f2777a")
-	 (320 . "#f99157")
-	 (340 . "#ffcc66")
-	 (360 . "#99cc99"))))
+    ((20 . "#f2777a")
+     (40 . "#f99157")
+     (60 . "#ffcc66")
+     (80 . "#99cc99")
+     (100 . "#66cccc")
+     (120 . "#6699cc")
+     (140 . "#cc99cc")
+     (160 . "#f2777a")
+     (180 . "#f99157")
+     (200 . "#ffcc66")
+     (220 . "#99cc99")
+     (240 . "#66cccc")
+     (260 . "#6699cc")
+     (280 . "#cc99cc")
+     (300 . "#f2777a")
+     (320 . "#f99157")
+     (340 . "#ffcc66")
+     (360 . "#99cc99"))))
  '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
