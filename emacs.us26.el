@@ -517,6 +517,8 @@ vi style of % jumping to matching brace."
 (setq web-mode-code-indent-offset 4)
 (setq web-mode-css-indent-offser 4)
 
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
 ;; other hooks -------------------------------------------------------------
 
 (add-hook 'change-log-mode-hook 'turn-on-auto-fill)
