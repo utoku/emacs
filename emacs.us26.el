@@ -519,6 +519,19 @@ vi style of % jumping to matching brace."
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
+;; ----------------------------------------------------------------------------
+;; org-mode stuff
+
+(require 'org)
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+
+(setq org-agenda-span 14)
+(setq org-agenda-files (list "~/eisen/eisentodo.org"
+                             "~/mud/eoeplan/todolist.org"
+                             "~/eisen/worktodos.org"))
+
 ;; other hooks -------------------------------------------------------------
 
 (add-hook 'change-log-mode-hook 'turn-on-auto-fill)
