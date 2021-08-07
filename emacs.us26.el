@@ -502,9 +502,9 @@ vi style of % jumping to matching brace."
 ;; python
 ;;FIXME: still using the old python mode from my ~/emacs/
 ;(setq load-path `("~/emacs" . ,load-path))
-(load-library "python-mode")
-(setq auto-mode-alist
-       (cons '("\\.py$" . python-mode) auto-mode-alist))
+;(load-library "python-mode")
+;(setq auto-mode-alist
+;       (cons '("\\.py$" . python-mode) auto-mode-alist))
 
 
 
@@ -549,7 +549,7 @@ vi style of % jumping to matching brace."
 ;(set-default-font "Courier-16")
 ;set-default-font "Inconsolata-16")
 ;(set-default-font "Inconsolata-24")
-(set-default-font "Inconsolata-15")
+(set-frame-font "Inconsolata-15")
 ;(set-default-font "Inconsolata-g-13")
 ;(set-default-font "Inconsolata-16.5")
 ;(set-default-font "Monospace-13")
