@@ -36,7 +36,7 @@
                           (bookmarks . 5)
                           (projects . 5)
                           (agenda .  10)
-                          (registers . 5)) )
+			  (registers . 5))))
 
 
 ;;;;circadian. theme support with time. 
