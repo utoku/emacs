@@ -383,14 +383,19 @@ vi style of % jumping to matching brace."
 
 ;; guess-style ----------------------------------------------------------------
 
-;;FIXME: guess-style is using some old functions, needs update,
-;(add-to-path 'load-path "/path/to/guess-style")
-(check-and-load "guess-style.el") 
-(autoload 'guess-style-set-variable "guess-style" nil t)
-(autoload 'guess-style-guess-variable "guess-style")
-(autoload 'guess-style-guess-all "guess-style" nil t)
 
-(global-guess-style-info-mode 1) ;; shows guess variables
+;; guess-style is removed because it uses package `cl which is deprecated.
+;; you can use the normal guesser functions in emacs, search for
+;; Guessing the Style
+
+;;FIXME: guess-style is using some old functions, needs update,
+;;;;;(add-to-path 'load-path "/path/to/guess-style")
+;; (check-and-load "guess-style.el") 
+;; (autoload 'guess-style-set-variable "guess-style" nil t)
+;; (autoload 'guess-style-guess-variable "guess-style")
+;; (autoload 'guess-style-guess-all "guess-style" nil t)
+
+;; (global-guess-style-info-mode 1) ;; shows guess variables
 
 ;;=============================
 ;; Use ruler in text-mode
@@ -529,8 +534,8 @@ vi style of % jumping to matching brace."
 
 (setq org-agenda-span 14)
 (setq org-agenda-files (list "~/eisen/eisentodo.org"
-                             "~/mud/eoeplan/todolist.org"
                              "~/eisen/worktodos.org"))
+;;;"~/mud/eoeplan/todolist.org"
 
 ;; other hooks -------------------------------------------------------------
 
@@ -541,20 +546,17 @@ vi style of % jumping to matching brace."
 
 ;;;;; current screen font =====================================================
 
-;(set-default-font "-*-lucidatypewriter-medium-*-*-*-17-*-*-*-*-*-*-*")
-;(set-default-font "-b&h-lucidatypewriter-medium-r-normal-sans-18-180-75-75-m-110-iso8859-1")
-;(set-default-font "-*-terminus-medium-r-*-*-20-*-*-*-*-*-*-*")
-;(set-default-font "-*-terminus-medium-r-*-*-22-*-*-*-*-*-*-*")
-;(set-default-font "-adobe-courier-medium-r-*-*-20-*-*-*-*-*-*-*")
-;(set-default-font "Courier-16")
-;set-default-font "Inconsolata-16")
-;(set-default-font "Inconsolata-24")
+;(set-frame-font "Courier-16")
+;set-frame-font "Inconsolata-16")
+;(set-frame-font "Inconsolata-24")
 (set-frame-font "Inconsolata-15")
-;(set-default-font "Inconsolata-g-13")
-;(set-default-font "Inconsolata-16.5")
-;(set-default-font "Monospace-13")
-;(set-default-font "Terminus-16.5")
-;(set-default-font "Monaco-13")
+;(set-frame-font "Inconsolata-g-13")
+;(set-frame-font "Inconsolata-16.5")
+;(set-frame-font "Monospace-13")
+;(set-frame-font "Terminus-16.5")
+;(set-frame-font "Monaco-13")
+;(set-frame-font "VictorMono-14")
+;(set-frame-font "iosevka-14")
 
 ;;;;; encoding ================================================================
 
