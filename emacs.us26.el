@@ -546,16 +546,13 @@ vi style of % jumping to matching brace."
 
 ;;;;; current screen font =====================================================
 
-;(set-frame-font "Courier-16")
-;set-frame-font "Inconsolata-16")
-;(set-frame-font "Inconsolata-24")
-(set-frame-font "Inconsolata-15")
-;(set-frame-font "Inconsolata-g-13")
+;(set-frame-font "Inconsolata-15")
+;(set-frame-font "Inconsolata-13")
 ;(set-frame-font "Inconsolata-16.5")
 ;(set-frame-font "Monospace-13")
 ;(set-frame-font "Terminus-16.5")
 ;(set-frame-font "Monaco-13")
-;(set-frame-font "VictorMono-14")
+(set-frame-font "VictorMono-14")
 ;(set-frame-font "iosevka-14")
 
 ;;;;; encoding ================================================================
@@ -583,9 +580,9 @@ vi style of % jumping to matching brace."
 (check-and-load "uprojects.el")
 
 (global-set-key (kbd "<f9>") 'project-select)
-;bind the git functions (probably better to use magit)
-(global-set-key (kbd "<f11>") 'pr-branch-diff)
-(global-set-key (kbd "<f12>") 'pr-diff)
+;; the old bindings for the git functions (I just use magit now)
+;(global-set-key (kbd "<f11>") 'pr-branch-diff)
+;(global-set-key (kbd "<f12>") 'pr-diff)
 
 
 ;;;;; misc ====================================================================
