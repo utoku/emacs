@@ -1,5 +1,4 @@
-;;;;; utku's .emacs, debian buster, emacs 26
-;;;;; last modified: 201909
+;;;;; utku's .emacs, debian bullseye, emacs 27.1
 
 ;;User Information
 (setq user-full-name "Utku Somer")
@@ -91,7 +90,7 @@ vi style of % jumping to matching brace."
 (setq my-load-path "~/emacs/")
 
 
-;;another loader
+;;loader function that loads from my-load-path and checks if file exists
 (defun check-and-load (lispfile)
   (let ((file2load (concat my-load-path lispfile)))
 	(when (file-exists-p file2load)
@@ -108,10 +107,10 @@ vi style of % jumping to matching brace."
 ;;;;; package archives (came with emacs24) ====================================
 
 (load "package")
-(package-initialize)
 ;;melpa stable repository
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize) ;; needs to run after defining package-archives
 
 
 ;;spanking new repository
@@ -160,6 +159,23 @@ vi style of % jumping to matching brace."
 ;;     (load-theme 'leuven t)
 ;;   (load-theme 'wombat t))
 
+;;;;circadian. theme support with time. 
+(defconst YF/latitude  38.73) ;; N
+(defconst YF/longitude 26.83) ;; E
+
+(defconst YK/latitude  32.1)  ;; N
+(defconst YK/longitude 27.29) ;; E
+
+(defconst SF/latitude  37.77)   ;; N
+(defconst SF/longitude -122.41) ;; W
+
+(use-package circadian
+  :config
+  (setq calendar-latitude  YF/latitude)
+  (setq calendar-longitude YF/longitude)
+  (setq circadian-themes '((:sunrise . leuven)
+                           (:sunset . sanityinc-tomorrow-eighties)))
+  (circadian-setup))
 
 
 ;;;;; emacs packages and goodies ==============================================
@@ -306,6 +322,9 @@ vi style of % jumping to matching brace."
   (setq company-backends (delete 'company-bbdb company-backends))
   (setq company-backends (delete 'company-oddmuse company-backends))
   )
+
+
+
 
 
 ;;;;; packages being tested are here for now ----------------------------------
@@ -501,18 +520,6 @@ vi style of % jumping to matching brace."
 
 ;;;;TODO test js2-refactor, tern, indium
 
-
-;; ----------------------------------------------------------------------------
-
-;; python
-;;FIXME: still using the old python mode from my ~/emacs/
-;(setq load-path `("~/emacs" . ,load-path))
-;(load-library "python-mode")
-;(setq auto-mode-alist
-;       (cons '("\\.py$" . python-mode) auto-mode-alist))
-
-
-
 ;; ----------------------------------------------------------------------------
 
 ;; web, multiple modes
@@ -534,7 +541,8 @@ vi style of % jumping to matching brace."
 
 (setq org-agenda-span 14)
 (setq org-agenda-files (list "~/eisen/eisentodo.org"
-                             "~/eisen/worktodos.org"))
+                             "~/eisen/worktodos.org"
+                             "~/eisen/jobhunt/jobs.org"))
 ;;;"~/mud/eoeplan/todolist.org"
 
 ;; other hooks -------------------------------------------------------------
@@ -676,24 +684,21 @@ vi style of % jumping to matching brace."
  '(ansi-color-names-vector
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
  '(custom-safe-themes
-   (quote
-    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default)))
+   '("161993d0fe35db6321a69a5427d0900380f2b855013b698c6cf70d20c7bb43fa" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default))
  '(fci-rule-color "#515151")
- '(hl-paren-background-colors (quote ("#2492db" "#95a5a6" nil)))
- '(hl-paren-colors (quote ("#ecf0f1" "#ecf0f1" "#c0392b")))
+ '(hl-paren-background-colors '("#2492db" "#95a5a6" nil))
+ '(hl-paren-colors '("#ecf0f1" "#ecf0f1" "#c0392b"))
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
-   (quote
-    (hydandata-light-theme xref-js2 circadian dashboard company-ycmd flycheck-ycmd counsel counsel-etags magit js2-refactor js2-mode powerline rainbow-delimiters material-theme leuven-theme julia-mode company-irony-c-headers color-theme-sanityinc-tomorrow)))
- '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
+   '(hydandata-light-theme xref-js2 circadian dashboard company-ycmd flycheck-ycmd counsel counsel-etags magit js2-refactor js2-mode powerline rainbow-delimiters material-theme leuven-theme julia-mode company-irony-c-headers color-theme-sanityinc-tomorrow))
+ '(pdf-view-midnight-colors '("#b2b2b2" . "#292b2e"))
  '(sml/active-background-color "#34495e")
  '(sml/active-foreground-color "#ecf0f1")
  '(sml/inactive-background-color "#dfe4ea")
  '(sml/inactive-foreground-color "#34495e")
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
-   (quote
-    ((20 . "#f2777a")
+   '((20 . "#f2777a")
      (40 . "#f99157")
      (60 . "#ffcc66")
      (80 . "#99cc99")
@@ -710,7 +715,7 @@ vi style of % jumping to matching brace."
      (300 . "#f2777a")
      (320 . "#f99157")
      (340 . "#ffcc66")
-     (360 . "#99cc99"))))
+     (360 . "#99cc99")))
  '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
