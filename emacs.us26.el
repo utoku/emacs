@@ -1,8 +1,10 @@
-;;;;; utku's .emacs, debian bullseye, emacs 27.1
+;;;;; utku's .emacs
 
 ;;User Information
 (setq user-full-name "Utku Somer")
-(defconst user-mail-address "utku.somer@gmail.com")
+;; decoding in case it is public
+(defconst user-mail-address
+  (base64-decode-string "dXRrdS5zb21lckBnbWFpbC5jb20="))
 (setq erc-user-full-name "Utku Somer")
 (setq erc-nick "claint")
 
@@ -173,7 +175,7 @@ vi style of % jumping to matching brace."
   :config
   (setq calendar-latitude  YF/latitude)
   (setq calendar-longitude YF/longitude)
-  (setq circadian-themes '((:sunrise . leuven)
+  (setq circadian-themes '((:sunrise . hydandata-light)
                            (:sunset . sanityinc-tomorrow-eighties)))
   (circadian-setup))
 
@@ -684,7 +686,7 @@ vi style of % jumping to matching brace."
  '(ansi-color-names-vector
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
  '(custom-safe-themes
-   '("161993d0fe35db6321a69a5427d0900380f2b855013b698c6cf70d20c7bb43fa" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default))
+   '("3e15b69a7b2572c64f5f04ebf1103deb803ec762f4270f3f1e498fb4b659afd3" "161993d0fe35db6321a69a5427d0900380f2b855013b698c6cf70d20c7bb43fa" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "9a155066ec746201156bb39f7518c1828a73d67742e11271e4f24b7b178c4710" default))
  '(fci-rule-color "#515151")
  '(hl-paren-background-colors '("#2492db" "#95a5a6" nil))
  '(hl-paren-colors '("#ecf0f1" "#ecf0f1" "#c0392b"))
