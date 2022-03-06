@@ -123,15 +123,22 @@ vi style of % jumping to matching brace."
 (defvar usomer/packages '(
                           ivy
                           swiper
+                          circadian
                           counsel
                           counsel-etags
-                          ycmd
-                          flycheck-ycmd
                           company-ycmd
+                          company-irony-c-headers
+                          flycheck-ycmd
+                          ycmd
+                          dashboard
                           js2-mode
+                          julia-mode
                           leuven-theme
                           magit
+                          powerline
                           projectile
+                          rainbow-delimiters
+                          xref-js2
                           yaml-mode)
   "Utku Somer's Default Packages")
 ;;others: web-mode, python-mode, html-helper.mode, projectile.
