@@ -9,11 +9,12 @@
   :ensure t
   :config
   (dashboard-setup-startup-hook)
+  (setq dashboard-startup-banner nil)
   (setq dashboard-set-footer nil)
-  (setq dashboard-items '((recents . 5)
-                          (bookmarks . 5)
+  (setq dashboard-items '((agenda .  10)
                           (projects . 5)
-                          (agenda .  10)
-			  (registers . 5))))
+                          (recents . 5)
+                          (bookmarks . 5)
+                          (registers . 5))))
 
 
