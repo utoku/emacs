@@ -184,8 +184,9 @@ vi style of % jumping to matching brace."
   (setq calendar-longitude YF/longitude)
   (setq circadian-themes '((:sunrise . hydandata-light)
                            (:sunset . sanityinc-tomorrow-eighties)))
-  (circadian-setup))
-
+  (circadian-setup)
+  :hook (desktop-after-read . circadian-setup )
+  )
 
 ;;;;; emacs packages and goodies ==============================================
 ;; some of these calls use the use-package macro. make sure that is
