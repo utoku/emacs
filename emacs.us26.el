@@ -44,8 +44,6 @@
 
 ;; keep no backup files 
 (setq make-backup-files nil)
-;; save desktop sessions
-(desktop-save-mode 1)
 
 ;; quick changing between buffers
 (defun change-buffer ()
@@ -185,6 +183,7 @@ vi style of % jumping to matching brace."
   (setq circadian-themes '((:sunrise . hydandata-light)
                            (:sunset . sanityinc-tomorrow-eighties)))
   (circadian-setup)
+  ;;enable in case we are using desktop 
   :hook (desktop-after-read . circadian-setup )
   )
 
